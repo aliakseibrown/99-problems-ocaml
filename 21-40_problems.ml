@@ -19,16 +19,37 @@ range 4 9;;
 range 9 4;;
 
 (* 23. Extract a given number of randomly selected elements from a list. (medium) *)
-(* let rand_select list n =
+let rand_select list n =
   let len = List.length list in
-  let ran l = Random.int l in
   let rec sub index = function
-    | [] -> "0"
+    | [] -> raise (Failure "Empty list")
     | a::b -> if index = 0 then a else sub (index - 1) b 
-(* in sub (ran len) list;; *)
   in let rec create_list i acc = 
-    if i = 0 then acc else create_list (i - 1) ((sub (ran (len - 1)) list)@acc)
+    if i = 0 then acc 
+    else create_list (i - 1) ((sub (Random.int len) list)::acc)
   in 
   create_list n [];;
 
-rand_select ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;; *)
+rand_select ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;; 
+
+let result = rand_select ["a"; "b"; "c"; "d"; "e"; "f"; "g"; "h"] 3;;
+
+(* 24. Lotto: Draw N different random numbers from the set 1..M. (easy) *)
+let rec lotto_select n m =
+  if n = 0 then [] else (Random.int m) :: lotto_select (n-1) m
+;;
+
+lotto_select 6 49;;
+
+(* 25. Generate a random permutation of the elements of a list. (easy) *)
+(* let permutation list =
+  let len = List.length list in
+  let rec sub acc k = function
+    | [] -> raise (Failure "Empty list")
+    | a :: b -> if k = 0 then (a, acc@b) else sub (a::acc) (k-1) b in
+  let rec perm len acc a b =
+    if len = 0 then acc else perm (len - 1) (acc@sub [] (Random.int len) list)
+  ;;
+    (* sub [] (Random.int len) list *)
+
+permutation ["a"; "b"; "c"; "d"; "e"; "f"];; *)
